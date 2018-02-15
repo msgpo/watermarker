@@ -17,15 +17,6 @@ const app = express();
 
 // Takes a query for image, process it, add watermark, return processed image
 
-
-const options = {
-  'text' : 'For more expert charts visit: http://cryptodam.us/chat',
-  'align': 'ltr',
-  'color' : 'rgb(255, 255, 255)'
-};
-
-// watermark.embedWatermark('chart.png', options);
-
 app.get('/', (req, res) => {
     const imagePath = req.query.image;
     const overlayText = req.query.text;
@@ -33,14 +24,16 @@ app.get('/', (req, res) => {
       res.send('Error, please provide correct parameters');
     }
 
-    fetchImage(imagePath, 'source.png', function(){
+    fetchImage(imagePath, 'source.png', () => {
         const options = {
-          'text' : overlayText,
-          'font': 'arial',
-          'color' : 'rgb(255, 255, 255)'
+          text : overlayText,
+          font: 'arial',
+          align: 'ltr',
+          color: 'rgb(255, 255, 255)'
         };
         watermark.embedWatermarkWithCb('./source.png', options, (err) => {
           if (!err) {
+            res.send('Complete');
             res.download('./watermark.png', 'output.png');
           }
         });
