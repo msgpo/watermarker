@@ -33,7 +33,6 @@ app.get('/', (req, res) => {
         };
         watermark.embedWatermarkWithCb('./source.png', options, (err) => {
           if (!err) {
-            res.send('Complete');
             res.download('./watermark.png', 'output.png');
           }
         });
